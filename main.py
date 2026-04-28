@@ -6,6 +6,7 @@ from typing import Any, Dict, Optional
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Header, Depends, status, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 
@@ -19,6 +20,15 @@ STORAGE_DIR = Path(os.getenv("STORAGE_DIR", "data"))
 STORAGE_DIR.mkdir(parents=True, exist_ok=True)
 
 app = FastAPI(title="JSONBin Clone")
+
+# CORS configuration
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Helper to validate ID
 def validate_id(bin_id: str):
